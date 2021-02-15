@@ -1,0 +1,65 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "victim" do |config|
+    config.vm.box = "cejkat/miesib2020-hw"
+    config.ssh.username = "miesib"
+    config.ssh.password = "miesib"
+  
+    # config.vm.box_check_update = true
+    # config.vm.network "forwarded_port", guest: 80, host: 8080
+    # config.vm.synced_folder "../data", "/vagrant_data"
+  
+    config.vm.provider "virtualbox" do |vb|
+      # Display the VirtualBox GUI when booting the machine
+      vb.gui = false
+    
+      # Customize the amount of memory on the VM:
+      vb.memory = "2048"
+      vb.name = "victim"
+    end # End of virtualbox vb
+  end # End of victim config
+
+
+  config.vm.define "mitm" do |config|
+    config.vm.box = "cejkat/miesib2020-hw"
+    config.ssh.username = "miesib"
+    config.ssh.password = "miesib"
+  
+    # config.vm.box_check_update = true
+    # config.vm.network "forwarded_port", guest: 80, host: 8080
+    # config.vm.synced_folder "../data", "/vagrant_data"
+  
+    config.vm.provider "virtualbox" do |vb|
+      # Display the VirtualBox GUI when booting the machine
+      vb.gui = false
+    
+      # Customize the amount of memory on the VM:
+      vb.memory = "2048"
+      vb.name = "mitm"
+    end # End of virtualbox vb
+  end # End of mitm config
+
+
+  config.vm.define "server" do |config|
+    config.vm.box = "cejkat/miesib2020-hw"
+    config.ssh.username = "miesib"
+    config.ssh.password = "miesib"
+  
+    # config.vm.box_check_update = true
+    # config.vm.network "forwarded_port", guest: 80, host: 8080
+    # config.vm.synced_folder "../data", "/vagrant_data"
+  
+    config.vm.provider "virtualbox" do |vb|
+      # Display the VirtualBox GUI when booting the machine
+      vb.gui = false
+    
+      # Customize the amount of memory on the VM:
+      vb.memory = "2048"
+      vb.name = "server"
+    end # End of virtualbox vb
+  end # End of server config
+end
+  
