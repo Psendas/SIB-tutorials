@@ -1,13 +1,19 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+BOX_BASE = "cejkat/miesib2020-hw"
+BOX_RAM = "2048"
+LOGIN_NAME = "miesib"
+LOGIN_PASSWORD = "miesib"
+
 Vagrant.configure("2") do |config|
 
   config.vm.define "victim" do |config|
-    config.vm.box = "cejkat/miesib2020-hw"
-    config.ssh.username = "miesib"
-    config.ssh.password = "miesib"
+    config.vm.box = BOX_BASE
+    config.ssh.username = LOGIN_NAME 
+    config.ssh.password = LOGIN_PASSWORD
   
+    config.vm.network "private_network", ip: "192.168.56.10"
     # config.vm.box_check_update = true
     # config.vm.network "forwarded_port", guest: 80, host: 8080
     # config.vm.synced_folder "../data", "/vagrant_data"
@@ -17,17 +23,18 @@ Vagrant.configure("2") do |config|
       vb.gui = false
     
       # Customize the amount of memory on the VM:
-      vb.memory = "2048"
+      vb.memory = BOX_RAM
       vb.name = "victim"
     end # End of virtualbox vb
   end # End of victim config
 
 
   config.vm.define "mitm" do |config|
-    config.vm.box = "cejkat/miesib2020-hw"
-    config.ssh.username = "miesib"
-    config.ssh.password = "miesib"
+    config.vm.box = BOX_BASE
+    config.ssh.username = LOGIN_NAME 
+    config.ssh.password = LOGIN_PASSWORD
   
+    config.vm.network "private_network", ip: "192.168.56.11"
     # config.vm.box_check_update = true
     # config.vm.network "forwarded_port", guest: 80, host: 8080
     # config.vm.synced_folder "../data", "/vagrant_data"
@@ -37,17 +44,18 @@ Vagrant.configure("2") do |config|
       vb.gui = false
     
       # Customize the amount of memory on the VM:
-      vb.memory = "2048"
+      vb.memory = BOX_RAM
       vb.name = "mitm"
     end # End of virtualbox vb
   end # End of mitm config
 
 
   config.vm.define "server" do |config|
-    config.vm.box = "cejkat/miesib2020-hw"
-    config.ssh.username = "miesib"
-    config.ssh.password = "miesib"
+    config.vm.box = BOX_BASE
+    config.ssh.username = LOGIN_NAME 
+    config.ssh.password = LOGIN_PASSWORD
   
+    config.vm.network "private_network", ip: "192.168.56.12"
     # config.vm.box_check_update = true
     # config.vm.network "forwarded_port", guest: 80, host: 8080
     # config.vm.synced_folder "../data", "/vagrant_data"
@@ -57,7 +65,7 @@ Vagrant.configure("2") do |config|
       vb.gui = false
     
       # Customize the amount of memory on the VM:
-      vb.memory = "2048"
+      vb.memory = BOX_RAM
       vb.name = "server"
     end # End of virtualbox vb
   end # End of server config
