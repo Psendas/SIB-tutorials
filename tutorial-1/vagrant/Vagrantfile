@@ -40,6 +40,18 @@ Vagrant.configure("2") do |config|
     # config.vm.box_check_update = true
     # config.vm.network "forwarded_port", guest: 80, host: 8080
     # config.vm.synced_folder "../data", "/vagrant_data"
+
+    # Shared folders
+    if Vagrant::Util::Platform.windows? then
+      # Configuration SPECIFIC for Windows 10 hosts
+      config.vm.synced_folder "shared", "/home/miesib/shared",
+      id: "miesib-root", owner: "miesib", group: "miesib",
+      mount_options: ["dmode=775", "fmode=664"]
+    else
+      # Configuration for Unix/Linux hosts
+      config.vm.synced_folder "shared", "/home/miesib/shared",
+      mount_options: ["dmode=775", "fmode=664"]
+    end # of shared folders
   
     config.vm.provider "virtualbox" do |vb|
       # Display the VirtualBox GUI when booting the machine
