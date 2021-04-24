@@ -1,5 +1,5 @@
 
-# Virtual box simple arp spoof
+# Manuální použití scapy pro `ARP` spoofing
 
 ```bash
 [miesib@victim ~]$ ip a
@@ -68,7 +68,10 @@ listening on enp0s8, link-type EN10MB (Ethernet), capture size 262144 bytes
 01:24:10.942858 ARP, Request who-has 192.168.56.12 tell 192.168.56.10, length 46
 ```
 
-## Authomated attack
+# Automatizovaný útok
+
+Po spuštění skript odesílá každých 15 vteřin `ARP` paket s podvrženou adresou
+útočníka klientovi i dalšímu síťovému prvku v cestě, zde označované jako server.
 
 ```bash
 [miesib@mitm ~]$ sudo python3 shared/simple_arp_spoof.py
@@ -81,11 +84,38 @@ Sent 1 packets.
 .
 ```
 
-# Usefull tools and troubleshooting
+# Monitorování telnet provozu
+
+Pro monitorování telnet provozu používáme skript, který provádí útok popsaný
+v kapitole Automatizovaný útok. Dochází k podvržení adres v `ARP` tabulkách
+virtualizovaných počítačů označených jako `server` a `client` spouštěných
+pomocí nástroje `Vagrant`. Tím dochází k přesměrování provozu na stroj
+útočníka označený jako `mitm`.
+
+Následně dochází k zachytávání a filtrování komunikace pomocí `scapy.sniff` s
+filtrem na požadovaný protokol (`telnet`) a cíle útoku. V zachycených
+paketech nahrazujeme zdrojové a cílové `MAC` adresy, přepočítáváme kontrolní
+součet a přeposíláme paket příslušnému cíli.
+
+Obsah zachytávaných paketů zároveň vypisujeme do konzole.
+
+Uživatelské jméno a heslo jsou zobrazeny po jejich zadání přihlašujícím se
+uživatelem. Adresy serveru a klienta jsou předem specifikované v použitém
+skriptu.
+
+Výsledek je zachycen na obrázku níže.
+
+![../src/miesib_telnet.png](../src/miesib_telnet.png)
+
+# Tools and troubleshooting
 
 ```bash
 sudo yum install net-tools -y
 sudo yum install telnet -y
 sudo systemctl disable --now firewalld
 sudo systemctl net.ipv4.tcp_syncookies=0
+sudo yum install telnet-server
+sudo systemctl start telnet.socket
+sudo systemctl status telnet.socket
+sudo systemctl enable telnet.socket
 ```
