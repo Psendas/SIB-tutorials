@@ -1,0 +1,87 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+BOX_BASE = "cejkat/miesib2020-hw"
+LOGIN_NAME = "miesib"
+LOGIN_PASSWORD = "miesib"
+
+Vagrant.configure("2") do |config|
+ config.vm.define "dnsserv" do |dnsserv|
+    dnsserv.vbguest.auto_update = false  
+    dnsserv.vm.box = BOX_BASE
+    dnsserv.vm.hostname = "dnsserv"
+    dnsserv.ssh.username = LOGIN_NAME
+    dnsserv.ssh.password = LOGIN_PASSWORD
+    dnsserv.vm.network "private_network", ip: "192.168.56.12"
+    dnsserv.vm.provider "virtualbox" do |vb|
+      vb.gui = false
+      vb.memory = "512"
+      vb.name = "dnsserv"
+    end # End of virtualbox vb
+
+    # Shared folders
+    if Vagrant::Util::Platform.windows? then
+      # Configuration SPECIFIC for Windows 10 hosts
+      config.vm.synced_folder "shared", "/home/miesib/shared",
+      id: "miesib-root", owner: "miesib", group: "miesib",
+      mount_options: ["dmode=775", "fmode=664"]
+    else
+      # Configuration for Unix/Linux hosts
+      config.vm.synced_folder "shared", "/home/miesib/shared",
+      mount_options: ["dmode=775", "fmode=664"]
+    end # of shared folders
+  
+    dnsserv.vm.provision "shell", inline: <<-SHELL
+        #install
+        yum update -y
+        yum -y install bind bind-utils haveged
+        systemctl enable haveged.service
+        systemctl start haveged.service
+        #copy conf + setup dnssec (https://www.digitalocean.com/community/tutorials/how-to-setup-dnssec-on-an-authoritative-bind-dns-server-2)
+        cp /home/miesib/shared/named.conf /etc/named.conf
+        cd /var/named
+        dnssec-keygen -a NSEC3RSASHA1 -b 2048 -n ZONE example.com
+        dnssec-keygen -f KSK -a NSEC3RSASHA1 -b 4096 -n ZONE example.com
+        for key in `ls Kexample.com*.key`; do echo "\$""INCLUDE $key">> zone.example.com ; done
+        dnssec-signzone -A -3 $(head -c 1000 /dev/random | sha1sum | cut -b 1-16) -N INCREMENT -o example.com -t zone.example.com
+        #enable firewal
+        firewall-cmd --permanent --add-port=53/udp
+        firewall-cmd --permanent --add-port=53/tcp
+        #restart services
+        firewall-cmd --reload
+        systemctl enable named.service
+        systemctl start named.service
+    SHELL
+  end # End of provisioning
+
+  config.vm.define "attacker" do |config|
+    config.vm.box = BOX_BASE
+    config.vm.hostname = "attacker"
+    config.ssh.username = LOGIN_NAME 
+    config.ssh.password = LOGIN_PASSWORD
+    config.vbguest.auto_update = false  
+  
+    config.vm.network "private_network", ip: "192.168.56.11"
+
+    # Shared folders
+    if Vagrant::Util::Platform.windows? then
+      # Configuration SPECIFIC for Windows 10 hosts
+      config.vm.synced_folder "shared", "/home/miesib/shared",
+      id: "miesib-root", owner: "miesib", group: "miesib",
+      mount_options: ["dmode=775", "fmode=664"]
+    else
+      # Configuration for Unix/Linux hosts
+      config.vm.synced_folder "shared", "/home/miesib/shared",
+      mount_options: ["dmode=775", "fmode=664"]
+    end # of shared folders
+  
+    config.vm.provider "virtualbox" do |vb|
+      # Display the VirtualBox GUI when booting the machine
+      vb.gui = false
+    
+      # Customize the amount of memory on the VM:
+      vb.memory = "2048"
+      vb.name = "attacker"
+    end # End of virtualbox vb
+  end # End of mitm config
+end # End of Vagrantfile
