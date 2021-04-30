@@ -1,0 +1,88 @@
+------------------------------------------------------------------------
+Count:1 Event#3.4444 2020-09-24 22:41:33 UTC
+ET POLICY exe download via HTTP - Informational
+10.0.0.179 -> 198.12.66.108
+IPVer=4 hlen=5 tos=0 dlen=195 ID=0 flags=0 offset=0 ttl=0 chksum=42762
+Protocol: 6 sport=50066 -> dport=80
+
+Seq=0 Ack=0 Off=5 Res=0 Flags=******** Win=0 urp=40935 chksum=0
+------------------------------------------------------------------------
+Count:1 Event#3.4445 2020-09-24 22:41:33 UTC
+ET INFO Executable Download from dotted-quad Host
+10.0.0.179 -> 198.12.66.108
+IPVer=4 hlen=5 tos=0 dlen=195 ID=0 flags=0 offset=0 ttl=0 chksum=42762
+Protocol: 6 sport=50066 -> dport=80
+
+Seq=0 Ack=0 Off=5 Res=0 Flags=******** Win=0 urp=40935 chksum=0
+------------------------------------------------------------------------
+Count:1 Event#3.4446 2020-09-24 22:41:33 UTC
+ET INFO Request for EXE via WinHTTP M1
+10.0.0.179 -> 198.12.66.108
+IPVer=4 hlen=5 tos=0 dlen=195 ID=0 flags=0 offset=0 ttl=0 chksum=42762
+Protocol: 6 sport=50066 -> dport=80
+
+Seq=0 Ack=0 Off=5 Res=0 Flags=******** Win=0 urp=40935 chksum=0
+------------------------------------------------------------------------
+Count:10 Event#3.4447 2020-09-24 22:41:33 UTC
+ET POLICY Binary Download Smaller than 1 MB Likely Hostile
+198.12.66.108 -> 10.0.0.179
+IPVer=4 hlen=5 tos=0 dlen=1488 ID=0 flags=0 offset=0 ttl=0 chksum=41469
+Protocol: 6 sport=80 -> dport=50066
+
+Seq=0 Ack=0 Off=5 Res=0 Flags=******** Win=0 urp=53663 chksum=0
+------------------------------------------------------------------------
+Count:30 Event#3.4457 2020-09-24 22:41:33 UTC
+ET POLICY PE EXE or DLL Windows file download HTTP
+198.12.66.108 -> 10.0.0.179
+IPVer=4 hlen=5 tos=0 dlen=1488 ID=0 flags=0 offset=0 ttl=0 chksum=41469
+Protocol: 6 sport=80 -> dport=50066
+
+Seq=0 Ack=0 Off=5 Res=0 Flags=******** Win=0 urp=53663 chksum=0
+------------------------------------------------------------------------
+Count:30 Event#3.4487 2020-09-24 22:41:33 UTC
+ET CURRENT_EVENTS WinHttpRequest Downloading EXE
+198.12.66.108 -> 10.0.0.179
+IPVer=4 hlen=5 tos=0 dlen=1488 ID=0 flags=0 offset=0 ttl=0 chksum=41469
+Protocol: 6 sport=80 -> dport=50066
+
+Seq=0 Ack=0 Off=5 Res=0 Flags=******** Win=0 urp=53663 chksum=0
+------------------------------------------------------------------------
+Count:30 Event#3.4517 2020-09-24 22:41:33 UTC
+ET INFO SUSPICIOUS Dotted Quad Host MZ Response
+198.12.66.108 -> 10.0.0.179
+IPVer=4 hlen=5 tos=0 dlen=1488 ID=0 flags=0 offset=0 ttl=0 chksum=41469
+Protocol: 6 sport=80 -> dport=50066
+
+Seq=0 Ack=0 Off=5 Res=0 Flags=******** Win=0 urp=53663 chksum=0
+------------------------------------------------------------------------
+Count:2 Event#3.4548 2020-09-24 22:41:38 UTC
+ET POLICY Lets Encrypt Free SSL Cert Observed
+37.120.174.218 -> 10.0.0.179
+IPVer=4 hlen=5 tos=0 dlen=1500 ID=0 flags=0 offset=0 ttl=0 chksum=54807
+Protocol: 6 sport=443 -> dport=50067
+
+Seq=0 Ack=0 Off=5 Res=0 Flags=******** Win=0 urp=7887 chksum=0
+------------------------------------------------------------------------
+Count:2 Event#3.4554 2020-09-24 22:43:07 UTC
+ETPRO POLICY Observed SSL Cert (IP Lookup - ipify .org)
+54.235.98.120 -> 10.0.0.179
+IPVer=4 hlen=5 tos=0 dlen=1500 ID=0 flags=0 offset=0 ttl=0 chksum=4359
+Protocol: 6 sport=443 -> dport=50083
+
+Seq=0 Ack=0 Off=5 Res=0 Flags=******** Win=0 urp=10451 chksum=0
+------------------------------------------------------------------------
+Count:3 Event#3.4556 2020-09-24 22:43:08 UTC
+ET INFO DNS Query for Suspicious .icu Domain
+10.0.0.179 -> 10.0.0.10
+IPVer=4 hlen=5 tos=0 dlen=59 ID=49946 flags=0 offset=0 ttl=128 chksum=25306
+Protocol: 17 sport=62584 -> dport=53
+
+len=39 chksum=18097
+------------------------------------------------------------------------
+Count:58 Event#3.4558 2020-09-24 22:43:13 UTC
+ET TROJAN AgentTesla Exfil Via SMTP
+10.0.0.179 -> 185.61.152.63
+IPVer=4 hlen=5 tos=0 dlen=62 ID=0 flags=0 offset=0 ttl=0 chksum=24203
+Protocol: 6 sport=50085 -> dport=587
+
+Seq=0 Ack=0 Off=5 Res=0 Flags=******** Win=0 urp=62636 chksum=0

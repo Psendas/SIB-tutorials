@@ -1,0 +1,79 @@
+# Excercise 3 - answers by Martin Černáč
+
+## Basic Tasks
+
+###  Document the date, start time and end time of the pcap in UTC (GMT). 
+
+ * pcap obsahuje nekolik NTP prenosu. Prvni z nich v case 38.776913 a synchronizovany cas je Feb 11, 2017 02:57:42.040902137 UTC. Prvni paket v pcapu byl tedy prenesen v case Feb 11, 2017 02:56:18 UTC.
+ * pcap konci v case 774.354885, ve vztahu k synchronizovanemu casu pomoci NTP je tedy konec v Feb 11, 2017 03:09:33 UTC
+
+###  Document the IP address, MAC and type of computer (Windows, Mac, Android, etc) of the three hosts in the pcap. 
+
+ * 10.3.14.131 - Dell_18:4c:2a (00:25:64:18:4c:2a) - Windows NT 10.0 - Win10
+ * 10.3.14.134 - AsustekC_5b:42:1c (14:da:e9:5b:42:1c) - Windows NT 6.1 - Win7
+ * 10.3.14.135 - Apple_4c:6b:e1 (00:26:bb:4c:6b:e1) - Darwin/14.5.0 - OS X Yosemite (v10.10.0)
+
+ -> IPs: suricata alerts + stats/endpoints dialog @ Wireshark
+ -> filtr "ip.addr == 10.3.14.134 && http" a koukam na useragenta v HTTP requestech
+
+###  Determine which host(s) were infected. 
+
+Suricata alerts jdou na:
+ * .134 (Win7) - Ransomware/Cerver
+ * .131 (Win10) - Ransomware/Spora
+
+## More Advanced Tasks:
+
+###  Document the family (or families) of malware based on indicators from the pcap. 
+
+Ransomware
+
+### Document the root cause for any infections noted in the pcap.
+
+Suricata reportuje prevazne porty 80 pro oba infikovane stroje. Predpokladame, ze se nakazili skrze protokol HTTP (neco asi stahli).
+
+#### Host .131 (Win10) - Ransomware/Spora
+
+wireshark filtr "ip.addr == 10.3.14.131" aka "DESKTOP-K1BN9E2" (NetBIOS Name Service). File -> Export obejcts -> HTTP. Sort podle typu. Aha, load.php, stovky kB, octet-stream a endpoint je 10.3.14.131. Exportuji. Aha, PE32 executable ...
+
+md5sum + google -> potvrzena Spora
+
+https://www.virustotal.com/#/file/d541b07d8219d84dcb453587804134ee511acab0f0461374a77d431969f4b31b/detection
+
+Zkoumam HTTP requesty, ktere vedly ke stazeni.
+
+request:
+
+POST /load.php HTTP/1.1\r\n
+Host: kuzem2.kku.edu.tr\r\n
+Referer: http://holinergroup.com/\r\n
+
+response:
+
+Content-Disposition: attachment; filename=Chrome Font v2.41.exe\r\n
+
+Hmh, holinergroup.com je asi necim infikovan. Ulivateli se nabidne ke stazeni malware binarka jako "Chrome Font v2.41.exe". Uzivatel binarku stahl a (s nejvyssi pravdepodobnosti) spustil.
+
+google "hlinergroup spora" -> prvni titulek "2017-02-04 - EITest fake Chrome popup leads to Spora ransomware". Jednalo se tedy pravdepodobne o popup, ktery uzivatele presvedcil stahnout nabizenou binarku "Chrome Font v2.41.exe".
+
+#### Host .134 (Win10) - Ransomware/Cerber
+
+wireshark filtr "ip.addr == 10.3.14.134". Letmo jsem prosel komunikaci, vidim, ze stroj se pravdepodobne jmenuje "KNUTSON-PC". Zkoumam HTTP pozadavky, vidim, ze jeden z prvnich veden a host mail.yahoo.com
+
+ File -> Export obejcts -> HTTP. Sort podle typu. Stejne jako pred tim, vyexportuju search.php (endpoint je 10.3.14.134). PE32 executable, md5sum, google.
+
+https://virustotal.com/en/file/56394a8465804c5044cc8d4360581e7de65f5a08aa4c6eb68f05690abb060520/analysis/ -> potvrzuje Ransomware/Cerber
+
+Nakaza pravdepodobne probehla e-mailem (napovida tomu provoz pred stazenim binarky). Uplne stejne probihala letosni nakaza CryptoLockerem na ZCU. Dropzone dle pcapu je domena unittogreas.top -> google -> potvrzeni.
+
+Celkove je to velmi podobne jako incident na ZCU. Snazil jsem se najit dropper, ktery uzivatel pravdepodobne stahl z mailu a spustil. Nalezl jsem https://www.hybrid-analysis.com/sample/cb3e66026a1498d5b6f559c63a0c84c63389db399aef1b5a37b40469fdbe6682?environmentId=100, tedy javascript. Opet velmi podobne incidentu ze ZCU.
+
+## Final Task:
+
+### Draft an incident report for the infected host(s). If more than one host is infected, draft a separate incident report for each host.
+
+Infikovany byly dle dostupnych udaju z pcapu celkem 2 stroje.
+
+Stroj "KNUTSON-PC" (IP 10.3.14.134) byl v sobotu 2017-02-11 priblizne 03:00Z infikovan malwarem Cerber, s vysokou pravdepodobnosti diky dropperu stazeneho z webmailu (mail.yahoo.com). Uzivatel stahl prilohu a spustil ji. Tim doslo ke stazeni dalsi stage malware z dropzone a infekci malwarem Cerber.
+
+Stroj "DESKTOP-K1BN9E2" (IP 10.3.14.131) byl v sobotu 2017-02-11 priblizne 03:00Z infikovan malwarem Spora, dle dostupnych udaju po navstiveni domeny hlinergroup.com, ktera byla infikovana skodlivym skriptem, ktery uzivateli pomoci popup okna nabizel extra fonty pro prohlizec Chrome. Uzivatel spustitelny soubor stahl, spustil a infikoval se malwarem Spora.
