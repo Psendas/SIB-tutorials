@@ -22,11 +22,11 @@
 
 - Filtr podle eventu ET MALWARE: `(ip.src == 10.0.0.167 or ip.dst == 10.0.0.167) and http`
 
-- `tcp.stream eq 125` -> V 23:14:42 posílá počítač `10.0.0.167` požadavek na stažení `VBS` skriptu označného jako `Judgement_04222020_1663.vbs` na počítač `158.69.28.93`. Podle Virustotal se jedná o Downloader/Dropper. ![misib-2021-hw3/virustotal1.png](misib-2021-hw3/virustotal1.png)
+- `tcp.stream eq 125` -> V 23:14:42 posílá počítač `10.0.0.167` požadavek na stažení `VBS` skriptu označného jako `Judgement_04222020_1663.vbs` na počítač `158.69.28.93`. Podle Virustotal se jedná o Downloader/Dropper. ![./misib-2021-hw3/files_from_pcap/virustotal1.png](./misib-2021-hw3/files_from_pcap/virustotal1.png)
 
 - `tcp.stream eq 132` -> Počítač `10.0.0.167` odesílá požadavek na adresu `104.24.111.29` ve kterém jako parametr odesílá base64 zakódovaný string `Windows Defender - 6,21,0|Microsoft Windows 10 Pro`.
 
-- `tcp.stream eq 136` -> `10.0.0.167` stahuje `HTTP` požadavkem spustitelný soubor z adresy `119.31.234.40`. Tento soubor je identifikován jako malware. ![misib-2021-hw3/virustotal2.png](misib-2021-hw3/virustotal2.png)
+- `tcp.stream eq 136` -> `10.0.0.167` stahuje `HTTP` požadavkem spustitelný soubor z adresy `119.31.234.40`. Tento soubor je identifikován jako malware. ![misib-2021-hw3/files_from_pcap/virustotal2.png](misib-2021-hw3/files_from_pcap/virustotal2.png)
 
 - export vzorku malwaru: `tshark -r 2020-04-24-traffic-analysis-exercise.pcap -Y "tcp.stream eq 136" -w executable` a smazat začátek požadavku, potřeba vypnout Windows Defender.
 
