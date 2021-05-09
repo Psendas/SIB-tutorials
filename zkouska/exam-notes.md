@@ -268,7 +268,7 @@ počítačové bezpečnosti
 
     - **Enticement** = útočník páchá nelegální činnost, kterou by ale páchal i tak -> honeypot (legální)
 
-![src/kill-chain.png](src/kill-chain.png)
+![src/chain.png](src/chain.png)
 
 - **Attribuion** - identifikace útočníka
 
