@@ -312,7 +312,83 @@ počítačové bezpečnosti
 
 ## Intrusion Detection
 
-- TODO prednaska 8 a 9
+- **IDS** = Intrusion Detection System
+
+  - focused on suspicious/malicious traﬃc detection
+
+  - host-based / network-based
+
+  - signature-based (recognition of bad patterns, malware)
+
+- **ADS** = Anomaly Detection System
+
+  - statistical, machine learning
+
+  - anomalous traffic — deviation from normal
+
+  - detection of known or unknown traffic
+
+- **IPS** = Intrusion Prevention System
+
+  - identify malicious activity, log information, report it, __try to block/stop it__
+
+  - packet discarding (blackholing), connection resetting
+
+- Tools:
+
+  - Packet-based:
+  
+    - [Snort](https://www.snort.org) - IDS/IPS, Statefulness, Rule-based detection
+
+    - [Zeek](https://zeek.org) - Transforms packets into events, Turing complete Bro scripting language, application layer decoding, anomaly detection, signature matching, connection analysis
+
+    - [Suricata](https://suricata-ids.org) - IDS/IPS/Network Security Monitoring, protocol parsing (HTTP, SSL, TLS, SMB, ...), PCRE support, Lua scripting
+
+  - Flow-based:
+
+    - Flowmon ADS / DDoS Defender
+
+    - Stream4Flow
+
+    - ntopng
+
+    - NfSen (batch processing)
+
+    - Analysis Pipeline (SiLK)
+
+    - [NEMEA](https://nemea.liberouter.org) - Modular, consisting of independent interconnected NEMEA modules, Stream-wise, Application-aware
+
+    - [FastNetMon](https://fastnetmon.com) - Detects DDoS Attacks in 2 seconds, Supports ﬂow data, sFlow, port mirror/SPAN, BGP
+
+    - [Flowmon](https://www.flowmon.com/en/) - Commercial
+
+  - Offline:
+
+    - Elasticsearch + Kibana
+
+    - Python + Pandas, matplotlib
+
+- Zpracování:
+
+  - Parametrické / Neparametrické (podle ne/znalosti distribuce)
+
+  - Batch (time slots) / Sequential (stream)
+
+  - Non-statistical approad = předem stanovená specifická pravidla pro detekci (příklad - pravidla pro detekci P2P spojení - port 6881, mnoho změn a připojení k jinak nepřístupným IP)
+
+  - Statistický přístup = detekuje změnu ve statistickém rozdělení
+
+  - **Change-Point Detection** = sleduje sekvenci náhodných hodnot (třeba počet deauthentication rámců), detekuje anomálii když hodnota přesáhne určitou mez
+
+  - **Non-Parametric Sequential Statistical Learning** = stanovíme počet pozorovaných paketů různých druhů pro detekci anomálií a porovnáváme s historickým pozorováním a odhadem
+
+  - **Exponential Weighted Moving Average** = vyhlazuje krátkodobé výkyvy pro redukci false alertů
+
+  - Kvalitu detekčních systémů testujeme pomocí kritérií: Test power (PWR) and Probability of False Alert (PFA)
+
+  - Chceme nízké False Alert Rate a Detection Delay
+
+  ![src/ids.png](src/ids.png)
 
 ## Incident Response
 
