@@ -10,27 +10,31 @@
 - **A computer security incident** = narušení, nebo hrozba narušení politik
 počítačové bezpečnosti
 
+- **Vulnerability** = slabina v softwaru nebo jeho konfiguraci, kterou je možné zneužít
+
 - **Risk** = threat * vulnerability
+
+![src/risk.jpg](src/risk.jpg)
 
 - **Risk management** = eliminace hrozeb za rozumnou cenu
 
 - Risk mitigation examples:
 
-  - Compartmentalize
+  - Compartmentalize = rozdělení rizika na sekce
   
-  - Secure Fail
+  - Secure Fail = v případě selhání systému nedojde k (tak velkému) bezpečnostnímu problému
 
-  - Defense-in-Depth
+  - Defense-in-Depth = více úrovní zabezpečení, které musí útočník překonat
 
-  - Least privilege
+  - Least privilege = uživatel má minimální možné oprávnění na zdroje, které ke své práci potřebuje
   
-  - Security-by-Obscurity
+  - Security-by-Obscurity = plýtvání časem útočníka
 
-- **Security incident** = člověkem způsobená událost s úmyslem způsobit škodu za použití počítače
+- **Security incident** = člověkem způsobená událost _s úmyslem_ způsobit škodu
 
 - Security Incident != Operations incident (different objectives)
 
-- Cil bezpecnosti je branit: Confidentiality + Integrity + Availability
+- Cílem bezpečnosti je bránit: Confidentiality + Integrity + Availability
 
 - **Attack vector** = popisuje jak je útok veden a co zneužívá
 
@@ -462,7 +466,7 @@ počítačové bezpečnosti
 
     - Hledat - běžící procesy, služby a programy (autorun, scheduled), historii uživatele, informace o síťovém připojení, ovladače a moduly, instalovaný software, logy, souborový systém, otevřené soubory
 
-    - Malware zkoumat v odříznutým virtuálu, revertovat stav, nenechávat lehce spustitelný (změnit příponu, heslovaný archív)
+    - Malware zkoumat v odříznutém virtuálu, revertovat stav, nenechávat lehce spustitelný (změnit příponu, heslovaný archív)
 
 7. Vzdělat management
 
@@ -470,7 +474,7 @@ počítačové bezpečnosti
 
 ![src/checklist.gif](src/checklist.gif)
 
-- Spolupráce na obraně - sdílení poznatků o oncidentech STIX a TAXII
+- Spolupráce na obraně - sdílení poznatků o incidentech STIX a TAXII
 
 ## Penetration Testing
 
@@ -538,19 +542,17 @@ počítačové bezpečnosti
 
   - UDP scan
 
-    - Odpověď od očekávané služby na daném portu = open
+    - Odpověď od očekávané služby na daném portu => open
 
-    - Bez odpovědi = open/filtered
+    - Bez odpovědi => open/filtered
 
-    - Odpověď ICMP unreachable = closed
+    - Odpověď ICMP unreachable => closed
 
   - Banner Grabbing = rozpoznání služby (případně i její verze) podle banneru odesílaném službou po navázání spojení
 
-  - OS Fingerprinting = odhadování verze systému na zákledě odlišností odpovědí způsobených rozdílnout implementací TCP stacku, případně sniffováním v síti
+  - OS Fingerprinting = odhadování verze systému na zákledě odlišností odpovědí způsobených rozdílnou implementací TCP stacku, případně sniffováním v síti
 
 - Vulnerability scanning
-
-  - Vulnerability = slabina v softwaru nebo jeho konfiguraci, kterou je možné zneužít
 
   - Vulnerability scanners (Qualys, Nessus) zjišťují:
 
@@ -558,9 +560,9 @@ počítačové bezpečnosti
 
     - Použití Firewallu
 
-    - otevřené TCP/UDP porty a služby na nich provozované
+    - Otevřené TCP/UDP porty a služby na nich provozované
 
-    - použitý OS
+    - Použitý OS
 
     - Zranitelnosti na základě detekovaných služeb ([Expolopit-DB](https://exploit-db.com))
 
@@ -569,8 +571,6 @@ počítačové bezpečnosti
 ![src/stride.png](src/stride.png)
 
 - Exploitation = získání přístupu k systému překonáním bezpečnostních omezení
-
-  - Protiopatření: Host Based Intrusion Prevention System, Security Guard, Web Application Firewall, ...
 
   - `metaspoit`
 
@@ -583,6 +583,8 @@ počítačové bezpečnosti
     - Rainbow tables = tabulky s předpočítanými hashy řetězců, urychlují útok na nesolené hashe hesel
 
   - Fuzzing = automatizované testování různých vstupů software s cílem odhalit neočekávané chování
+
+  - Protiopatření: Host Based Intrusion Prevention System, Security Guard, Web Application Firewall, ...
 
 - Post Exploitation
 
